@@ -1,0 +1,142 @@
+<style>
+
+ div.targetbgchange {
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-position: right top !important;
+    transition: background 0s linear !important;
+  }
+
+  div.box-background-cover.targetbg-full-morning,
+  div.box-background-cover.targetbg-full-morning[style],
+  div.targetbg-full-morning {
+    background-image: url(/content/dam/mauritius/absa/timestamp-images/default/morning-3360x1800.png) !important;
+  }
+
+  div.box-background-cover.targetbg-full-afternoon,
+  div.box-background-cover.targetbg-full-afternoon[style],
+  div.targetbg-full-afternoon {
+    background-image: url(/content/dam/mauritius/absa/timestamp-images/default/afternoon-3360x1800.png) !important;
+  }
+
+  div.box-background-cover.targetbg-full-evening,
+  div.box-background-cover.targetbg-full-evening[style],
+  div.targetbg-full-evening {
+    background-image: url(/content/dam/mauritius/absa/timestamp-images/default/evening-3360x1800.png) !important;
+  }
+
+  div.box-background-cover.targetbg-desktop-morning,
+  div.box-background-cover.targetbg-desktop-morning[style],
+  div.targetbg-desktop-morning {
+    background-image: url(/content/dam/mauritius/absa/timestamp-images/default/morning-1440x800.png) !important;
+  }
+
+  div.box-background-cover.targetbg-desktop-afternoon,
+  div.box-background-cover.targetbg-desktop-afternoon[style],
+  div.targetbg-desktop-afternoon {
+    background-image: url(/content/dam/mauritius/absa/timestamp-images/default/afternoon-1440x800.png) !important;
+  }
+
+  div.box-background-cover.targetbg-desktop-evening,
+  div.box-background-cover.targetbg-desktop-evening[style],
+  div.targetbg-desktop-evening {
+    background-image: url(/content/dam/mauritius/absa/timestamp-images/default/evening-1440x800.png) !important;
+  }
+
+  div.box-background-cover.targetbg-mobile-morning,
+  div.box-background-cover.targetbg-mobile-morning[style],
+  div.targetbg-mobile-morning {
+    background-image: url(/content/dam/mauritius/absa/timestamp-images/default/morning-480x801.png) !important;
+  }
+
+  div.box-background-cover.targetbg-mobile-afternoon,
+  div.box-background-cover.targetbg-mobile-afternoon[style],
+  div.targetbg-mobile-afternoon {
+    background-image: url(/content/dam/mauritius/absa/timestamp-images/default/afternoon-480x801.png) !important;
+  }
+
+  div.box-background-cover.targetbg-mobile-evening,
+  div.box-background-cover.targetbg-mobile-evening[style],
+  div.targetbg-mobile-evening {
+    background-image: url(/content/dam/mauritius/absa/timestamp-images/default/evening-480x801.png) !important;
+  }
+
+  div.box-background-cover.targetbg-tablet-morning,
+  div.box-background-cover.targetbg-tablet-morning[style],
+  div.targetbg-tablet-morning {
+    background-image: url(/content/dam/mauritius/absa/timestamp-images/default/morning-1024x764.png) !important;
+  }
+
+  div.box-background-cover.targetbg-tablet-afternoon,
+  div.box-background-cover.targetbg-tablet-afternoon[style],
+  div.targetbg-tablet-afternoon {
+    background-image: url(/content/dam/mauritius/absa/timestamp-images/default/afternoon-1024x764.png) !important;
+  }
+
+  div.box-background-cover.targetbg-tablet-evening,
+  div.box-background-cover.targetbg-tablet-evening[style],
+  div.targetbg-tablet-evening {
+    background-image: url(/content/dam/mauritius/absa/timestamp-images/default/evening-1024x764..png) !important;
+  }
+ 
+ 
+</style>
+
+
+<script>
+
+var gBody = document.getElementsByTagName("body")[0];
+var width = window.innerWidth || document.documentElement.clientWidth || gBody.clientWidth;
+var targetCls = '';
+var dateHandler = new Date();
+var timeofDay = 'morning';
+var msgSuccess = false;
+var tgtCurPathname = window.location.pathname;
+
+if (dateHandler.getHours() < 12) {
+  timeofDay = 'morning';
+} else if (dateHandler.getHours() < 18) {
+  timeofDay = 'afternoon';
+} else {
+  timeofDay = 'evening';
+}
+
+targetCls = 480 >= width ? "targetbg-mobile" : 1024 >= width ? "targetbg-tablet" : 1440 >= width ? "targetbg-desktop" : "targetbg-full";
+targetCls += "-" + timeofDay;
+
+console.log("KZN target test running here");
+
+function _adobeTargetAddGreetingMsg() {
+  var mainDivStyleAttr = "";
+  var allow = false;
+  if (tgtCurPathname == "/en/personal/" || tgtCurPathname == "/en/affluent/" || tgtCurPathname == "/en/sme-and-business/" || tgtCurPathname == "/en/corporate-and-international/" || tgtCurPathname == "/en/wealth-international/") {
+    allow = true;
+  }
+
+  try {
+    if ($('div.richText-content > h1 > span.white-text').length && allow == true) {
+      $('div.richText-content > h1 > span.white-text').eq(0).html("Good " + timeofDay + ". <br/>What would you like to do?");
+      msgSuccess = true;
+    }
+    if ($('div.box-background-cover').length && !$('div.box-background-cover').hasClass('targetbgchange')) {
+      mainDivStyleAttr = $('div.box-background-cover').attr("style");
+      $('div.box-background-cover').addClass('targetbgchange').addClass(targetCls);
+      if (typeof mainDivStyleAttr !== "undefined" && mainDivStyleAttr !== false) {
+        $('div.box-background-cover').removeAttr("style")
+      }
+    }
+  } catch (e) {
+    //
+  }
+  return true;
+}
+
+_adobeTargetAddGreetingMsg();
+
+$(document).ready(function() {
+  if (!msgSuccess) {
+    _adobeTargetAddGreetingMsg();
+  }
+});
+
+</script>
